@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CompanyController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
@@ -25,4 +26,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::middleware(['user.type:user'])->group(function() {
         Route::apiResource('/users', UserController::class)->only('show', 'update');
     });
+
+    Route::middleware(['auth:sanctum', 'check.license', 'check.permissions:view-dashboard'])
+    ->get('/dashboard', DashboardController::class);
 });
